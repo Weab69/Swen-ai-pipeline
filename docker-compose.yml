@@ -1,0 +1,107 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: swen_redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - swen-network
+
+  news:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: swen_news
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env
+    command: npm run start:news
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - swen-network
+    restart: unless-stopped
+
+  storage:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: swen_storage
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env
+    command: npm run start:storage
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks:
+      - swen-network
+    restart: unless-stopped
+
+  ai:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: swen_ai
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env
+    command: npm run start:ai
+    depends_on:
+      redis:
+        condition: service_healthy
+      storage:
+        condition: service_started
+    networks:
+      - swen-network
+    restart: unless-stopped
+
+  ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: swen_ingestion
+    ports:
+      - "3004:3000"
+    environment:
+      - NODE_ENV=production
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    env_file:
+      - .env
+    command: npm run start:ingestion
+    depends_on:
+      redis:
+        condition: service_healthy
+      ai:
+        condition: service_started
+    networks:
+      - swen-network
+    restart: unless-stopped
+
+networks:
+  swen-network:
+    driver: bridge
