@@ -152,14 +152,13 @@ $ npm run start:prod
 
 ## Live API Demo
 
-You can access the live API endpoints to see SWEN in action:
+You can access the live API endpoints to see SWEN in action():
 
-**All News:** [https://swen-test.fly.dev/api/v1/news/](https://swen-test.fly.dev/api/v1/news/) - Returns all processed news articles
+**All News:** [http://swen-ddt-dp1n5c-0fc8f3-69-62-127-97.traefik.me/api/v1/news/](http://swen-ddt-dp1n5c-0fc8f3-69-62-127-97.traefik.me/api/v1/news/) - Returns all processed news articles
 
-**Specific Article:** [https://swen-test.fly.dev/api/v1/news/hydrogen-sa-2025](https://swen-test.fly.dev/api/v1/news/hydrogen-sa-2025) - Returns detailed view of a specific article
+**Specific Article:** [http://swen-ddt-dp1n5c-0fc8f3-69-62-127-97.traefik.me/api/v1/news/3d2f9507-5afb-4ad1-a93a-3ccd2b2fb3c7](http://swen-ddt-dp1n5c-0fc8f3-69-62-127-97.traefik.me/api/v1/news/3d2f9507-5afb-4ad1-a93a-3ccd2b2fb3c7) - Returns detailed view of a specific article
 
 These endpoints showcase the AI-enhanced news processing capabilities with enriched content including summaries, context, media, and geographic data.
-
 
 ## Data Flow
 
